@@ -26,7 +26,12 @@ public class Libro {
     public Libro(DatosLibro datosLibro){
         this.titulo = datosLibro.titulo();
         this.idioma = datosLibro.idioma();
-        this.numeroDeDescargas = datosLibro.numeroDeDescargas();
+        try{
+            this.numeroDeDescargas = datosLibro.numeroDeDescargas();
+        }catch(NumberFormatException e){
+            this.numeroDeDescargas = 0;
+        }
+
 
     }
 
