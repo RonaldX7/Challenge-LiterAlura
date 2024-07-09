@@ -3,6 +3,7 @@ package com.alura.literAlura.model;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "libros")
@@ -14,18 +15,26 @@ public class Libro {
     @Column(unique = true)
     private String titulo;
 
-    private String idioma;
+    @Enumerated(EnumType.STRING)
+    private Idioma idioma;
 
     private Integer numeroDeDescargas;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Autor autor;
 
     public Libro(){}
 
     public Libro(DatosLibro datosLibro){
         this.titulo = datosLibro.titulo();
-        this.idioma = datosLibro.idioma();
+        this.idioma = Idioma.fromString(datosLibro.idioma().toString().split(",")[0].trim());
+        Optional<DatosAutor> autor = datosLibro.autor().stream()
+                .findFirst();
+        if (autor.isPresent()) {
+            this.autor = new Autor(autor.get());
+        } else {
+            System.out.println("No se a encontrado el autor");
+        }
         try{
             this.numeroDeDescargas = datosLibro.numeroDeDescargas();
         }catch(NumberFormatException e){
@@ -51,11 +60,11 @@ public class Libro {
         this.titulo = titulo;
     }
 
-    public String getIdioma() {
+    public Idioma getIdioma() {
         return idioma;
     }
 
-    public void setIdioma(String idioma) {
+    public void setIdioma(Idioma idioma) {
         this.idioma = idioma;
     }
 
@@ -77,9 +86,9 @@ public class Libro {
 
     @Override
     public String toString() {
-        return "************* Libro *************\n"+
+        return "\n************* Libro " + id + " *************\n"+
                 "Titulo = " + titulo + '\n' +
-                "Autor = " + autor + '\n' +
+                "Autor = " + autor.getNombre() + '\n' +
                 "Idioma = " + idioma + '\n' +
                 "NumeroDeDescargas = " + numeroDeDescargas;
     }
