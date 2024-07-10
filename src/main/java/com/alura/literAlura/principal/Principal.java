@@ -5,10 +5,6 @@ import com.alura.literAlura.repository.AutorRepository;
 import com.alura.literAlura.repository.LibroRepository;
 import com.alura.literAlura.service.ConsumoAPI;
 import com.alura.literAlura.service.ConvierteDatos;
-import org.springframework.dao.DataIntegrityViolationException;
-
-import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -60,6 +56,7 @@ public class Principal {
                     break;
                 case 5:
                     listarLibrosPorIdioma();
+                    break;
                 case 0:
                     System.out.println("Cerrando el programa...");
                     break;
@@ -81,7 +78,7 @@ public class Principal {
         if (libroBuscado.isPresent()) {
             var libroEncontrado = libroBuscado.get();
 
-            Libro libroExistente = Lrepositorio.findByTituloIgnoreCase(libroEncontrado.titulo());
+            Libro libroExistente = Lrepositorio.findByTituloContainsIgnoreCase(libroEncontrado.titulo());
 
             if (libroExistente != null){
                 System.out.println("El libro ya esta registrado");
@@ -107,9 +104,32 @@ public class Principal {
     }
 
     private void listarAutoresVivos() {
+        System.out.println("Ingrese el año que desea:");
+        var fechaAutor = teclado.nextLine();
+
+        List<Autor> autores = Arepositorio.autoresPorAnio(Integer.valueOf(fechaAutor));
+
+        if (autores.isEmpty()){
+            System.out.println("\nAutores no encontrados");
+        }else{
+            autores.forEach(System.out::println);
+        }
+
     }
 
     private void listarLibrosPorIdioma() {
+        System.out.println("Ingrese el idioma que desea buscar:");
+        var idioma = teclado.nextLine();
+        var LibroIdioma = Idioma.fromEspanol(idioma);
+
+        List<Libro> librosPorIdioma = Lrepositorio.findByIdioma(LibroIdioma);
+
+        if (librosPorIdioma.isEmpty()){
+            System.out.println("\nLibros no encontrados en el idioma: " + idioma);
+        }else {
+            System.out.println("\nLos libros encontrados en el idioma " + idioma + " son:");
+            librosPorIdioma.forEach(System.out::println);
+        }
     }
 
 }
