@@ -1,6 +1,6 @@
 <h1>Challenge LiterAlura</h1>
 <h2>📋 Descripción</h2>
-<p>El proyecto LiterAlura es parte del Challenge LiterAlura de Alura Latam. Este proyecto tiene como objetivo desarrollar una aplicación para la gestión de libros y autores utilizando Java y Spring Boot.</p>
+<p>El proyecto LiterAlura tiene como objetivo desarrollar una aplicación para la gestión de libros y autores utilizando Java y Spring Boot.</p>
 <h2>🚀 Instalación</h2>
 <p>Sigue estos pasos para configurar el proyecto en tu máquina local:</p>
 
